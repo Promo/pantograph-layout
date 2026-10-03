@@ -264,4 +264,8 @@ License 1.1 (see `assets/fonts/OFL-*.txt`).
 
 ## License
 
-[CHOOSE A LICENSE]
+[MIT](LICENSE): use the CSS, the code and the texts in any project, including
+commercial ones, as long as you keep the copyright notice.
+
+The fonts in `assets/fonts/` are not covered by MIT: they are under the SIL Open Font
+License 1.1 (see `assets/fonts/OFL-*.txt`).
