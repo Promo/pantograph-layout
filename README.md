@@ -235,7 +235,8 @@ assets/site.css             the site styles, in rem
 assets/app.js               hero demo, live calculation, copy buttons, language menu
 assets/fonts/               Onest and JetBrains Mono (SIL Open Font License 1.1)
 SKILL.md                    the AI skill
-src/build.py                page generator (Python 3, no dependencies)
+src/build.mjs               page generator (Node.js, no dependencies)
+src/serve.mjs               local server for checking the pages
 src/template.html           page template
 src/i18n/*.json             texts, one file per language
 src/content.json            code samples shown on the page
@@ -244,16 +245,21 @@ src/content.json            code samples shown on the page
 
 ### Build
 
+Node.js 20 or newer, no `npm install` needed.
+
 ```sh
-python3 src/build.py
-python3 -m http.server 8000   # then open http://localhost:8000
+npm run build   # node src/build.mjs
+npm start       # node src/serve.mjs, then open http://localhost:8000
 ```
+
+Rebuild after changing `src/template.html`, `src/content.json` or `src/i18n/*.json`.
+Changes in `assets/` need no build.
 
 ### Add a language
 
 1. Copy `src/i18n/en.json` to `src/i18n/<code>.json` and translate the values.
 2. In `lang`, set `code`, `short`, `label` and `path` (`"<code>/"`).
-3. Run `python3 src/build.py`. The page appears at `/<code>/` and in the language menu
+3. Run `npm run build`. The page appears at `/<code>/` and in the language menu
    of every page.
 
 ### Fonts

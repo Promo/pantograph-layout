@@ -22,11 +22,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-node@v7
         with:
-          python-version: "3.12"
+          node-version: 24
       - name: Build pages
-        run: python3 src/build.py
+        run: node src/build.mjs
       - name: Collect the site
         run: |
           mkdir -p _site

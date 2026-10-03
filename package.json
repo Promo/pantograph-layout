@@ -1,0 +1,13 @@
+{
+  "name": "pantograph-layout",
+  "private": true,
+  "description": "Pantograph Layout site: the Figma mockup doesn't reflow, it scales",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "start": "node src/serve.mjs"
+  }
+}
