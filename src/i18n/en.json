@@ -1,0 +1,236 @@
+{
+  "lang": {
+    "code": "en",
+    "short": "EN",
+    "label": "English",
+    "path": "en/"
+  },
+  "t": {
+    "dec": ".",
+    "langLabel": "Language",
+    "brand": "Pantograph Layout",
+    "nav": {
+      "idea": "The idea",
+      "algo": "Algorithm",
+      "design": "Designers",
+      "code": "Developers",
+      "skill": "AI skill",
+      "limits": "Limits"
+    },
+    "bp": {
+      "m": "Mobile",
+      "t": "Tablet",
+      "d": "Desktop"
+    },
+    "hero": {
+      "kicker": "A layout technique for designers and front-end developers",
+      "titleA": "The mockup doesn’t reflow.",
+      "titleB": "It scales.",
+      "lead": "Within a breakpoint the page looks like the Figma mockup at any width: same proportions, same line breaks, same composition. Only the scale changes.",
+      "play": "Play",
+      "pause": "Pause",
+      "hint": "Drag the slider or watch it play",
+      "vw": "Viewport",
+      "bp": "Breakpoint",
+      "mock": "Mockup",
+      "rem": "1rem",
+      "px24": "24px mockup text",
+      "axisY": "1rem, px",
+      "slider": "Viewport width",
+      "specimen": "Pantograph",
+      "specimenNote": "24px mockup text at this width"
+    },
+    "cmp": {
+      "kicker": "01 · The idea",
+      "title": "How Pantograph differs from a regular responsive layout",
+      "lead": "Take a 375 px mobile mockup and open the page on a phone that is 480 px wide.",
+      "f1t": "Figma mockup",
+      "f1x": "The reference.",
+      "f2t": "Layout in px",
+      "f2x": "Fonts and spacing stay as in the mockup, blocks stretch to the width. The proportions are no longer what the designer drew.",
+      "f3t": "Pantograph",
+      "f3x": "Everything is scaled by 480 / 375 = 1.28. It is the same mockup, only larger.",
+      "adT": "Responsive layout",
+      "adX": "Sizes are fixed in px. Between breakpoints blocks stretch and shrink, so every width in between has to be checked separately.",
+      "pgT": "Pantograph layout",
+      "pgX": "Sizes are in rem, and 1rem depends on the viewport width. Any width inside a breakpoint is the mockup at scale."
+    },
+    "algo": {
+      "kicker": "02 · Algorithm",
+      "title": "One stylesheet, one formula",
+      "lead": "The CSS defines the breakpoints and computes the font-size of html. The whole layout is written in rem, so it grows and shrinks along with it.",
+      "s1T": "Breakpoints: three mockups, three ranges",
+      "s1X": "Each range of widths gets three numbers. --balance-point is the balance point: the width of the Figma mockup, where 1rem is exactly 1px. --min-vw and --max-vw are the range edges. The numbers have no units so they can be divided by each other.",
+      "thWin": "Viewport",
+      "thMock": "Mockup",
+      "thRem": "1rem at the edges",
+      "r1": "up to 499 px",
+      "r2": "500–1151 px",
+      "r3": "1152 px and up",
+      "r1rem": "0.853 → 1.333 px",
+      "r2rem": "0.651 → 1.5 px",
+      "r3rem": "0.8 → 1.111 px",
+      "s1N": "The first media query starts at 0 px, but the math starts at 320: on narrower screens 1rem never drops below 0.853 px.",
+      "s2T": "Computing 1rem",
+      "s2X": "The CSS draws a straight line: at min-vw 1rem is at its smallest, at max-vw at its largest, and in between it grows evenly. Here it is piece by piece; the example numbers are for the tablet range.",
+      "c1T": "Size of 1rem at the range edges",
+      "c1X": "At the mockup width 1rem = 1px. At a range edge it is smaller or larger by the same ratio as the edge is to the mockup.",
+      "c1E1": "500 / 768 = 0.651 px",
+      "c1E2": "1152 / 768 = 1.5 px",
+      "c2T": "Slope",
+      "c2X": "How many px 1rem gains with each pixel of viewport width.",
+      "c2E1": "(1.5 − 0.651) / (1152 − 500)",
+      "c2E2": "= 0.001302 = 1 / 768",
+      "c3T": "Line equation",
+      "c3X": "A line through the point (min-vw; min-font-size) with that slope. 100vw is the current viewport width. Multiplying by 1px turns the unitless numbers into pixels.",
+      "c3E1": "Viewport 900 px:",
+      "c3E2": "0.001302 × (900 − 500) + 0.651 = 1.172 px",
+      "c4T": "Clamp and apply",
+      "c4X": "clamp keeps the size inside the range edges. Inside the range it changes nothing; it only acts above 1600 px and below 320 px. The result becomes the font-size of html, and every rem on the page is computed from it.",
+      "s3T": "The formula, simplified",
+      "s3Big": "1rem = viewport width ÷ mockup width",
+      "s3X": "That is all the algorithm does. The other variables let CSS evaluate the formula, and clamp keeps the value inside the range.",
+      "ex": [
+        "375 px → 1 px",
+        "412 px → 1.099 px",
+        "480 px → 1.28 px",
+        "1024 px → 1.333 px"
+      ],
+      "lvT": "Try your own width",
+      "lvX": "The values follow the width from the demo at the top. Pick a width here or go back to the slider.",
+      "lvBp": "Breakpoint",
+      "lvVars": "Variables",
+      "lvRes": "Result",
+      "lvMock": "mockup",
+      "lvClamped": "Viewport wider than 1600 px: the upper limit applies",
+      "s4T": "What happens at the borders",
+      "e1T": "Breakpoint switch",
+      "e1X": "At 1151 px the tablet mockup is scaled ×1.5. At 1152 px the desktop mockup takes over at ×0.8. The layout has changed, and the new mockup starts from a smaller scale. The jump is expected.",
+      "e2T": "Wider than 1600 px",
+      "e2X": "clamp stops the growth: 1rem stays at 1.111 px. Fonts and spacing stop growing, and the extra width goes into the margins.",
+      "e3T": "Narrower than 320 px",
+      "e3X": "1rem never drops below 0.853 px. The mobile mockup stops shrinking."
+    },
+    "des": {
+      "kicker": "03 · For designers",
+      "title": "What it means for designers",
+      "a1T": "Draw three mockups: 375, 768 and 1440 px",
+      "a1X": "Each mockup covers its own range of widths. There is no need to draw the widths in between: they are the same mockup at scale.",
+      "a2T": "Check the edge widths",
+      "a2X": "The mockup shrinks the most at 500 px, where the tablet mockup is at ×0.65. Check small tablet text at this width.",
+      "thWin": "Viewport",
+      "thMock": "Mockup",
+      "thScale": "Scale",
+      "thText": "14px text",
+      "offT": "If the mockup isn’t drawn at the breakpoint width",
+      "b1T": "Different mockup width",
+      "b1X": "Desktop drawn at 1200 and mobile at 360? No need to recalculate numbers by hand. Put your mockup width into --balance-point, and 1rem is again 1px of your mockup. The range edges and media queries stay the same.",
+      "b1N": "Side effect: at the breakpoint width 1rem is no longer 1px (at 1440 it is 1.2 px). The mockup becomes the reference.",
+      "b2T": "No tablet mockup",
+      "b2X1": "Use the desktop layout at a scale of about 0.75: for the tablet range, --balance-point = 768 / 0.75 = 1024. The honest 1200 gives a scale of 0.64 at 768 px and text of around 15 px, which is too small.",
+      "b2X2": "To keep content within 768 px, set container and column widths in percent. Keep fonts, spacing, heights and radii in rem. Shrink or move large illustrations with a separate rule.",
+      "b2N": "Write the chosen scales down in the project README so the rule doesn’t get lost."
+    },
+    "code": {
+      "kicker": "04 · For developers",
+      "title": "How to build",
+      "s1T": "Add the CSS",
+      "s1X": "Once, globally, before the page styles. It sets the font-size of html, so it affects every rem. If only some pages use this layout, include the CSS only on those.",
+      "copy": "Copy CSS",
+      "copied": "Copied",
+      "s2T": "Figma numbers go into rem",
+      "s2X": "24px in the mockup is 24rem in code. No need to recalculate for each width: the scale changes by itself.",
+      "s3T": "Media queries only for layout changes",
+      "s3X": "Use them when the grid changes or the mockups differ. The boundaries are the same 500 and 1152 px as in the CSS.",
+      "exT": "Example",
+      "n1T": "Mobile first",
+      "n1X": "The mobile version first, without media queries, then tablet and desktop.",
+      "n2T": "Numbers straight from the mockups",
+      "n2X": "The hotel list title in the demo mockups is 21 px on mobile, 28 px on tablet and 36 px on desktop. The code uses the same numbers, in rem.",
+      "n3T": "No code between breakpoints",
+      "n3X": "At 412 px the title is 21 × 1.099 = 23.1 px, at 900 px it is 28 × 1.172 = 32.8 px. The CSS from step one does this."
+    },
+    "skill": {
+      "kicker": "05 · AI skill",
+      "title": "Teach your AI agent the same technique",
+      "lead": "The skill is an English SKILL.md file: instructions an AI agent reads before it starts. Put it in your agent’s skills folder and it will build pages by these rules.",
+      "inT": "What’s inside",
+      "items": [
+        "The rule 1rem = 1px of the mockup",
+        "Breakpoints 375 / 768 / 1440 and the 500 and 1152 px borders",
+        "The full CSS and how the formula works",
+        "What to do with mockups drawn at other widths",
+        "Pitfalls and an edge-width checklist"
+      ],
+      "dl": "Download SKILL.md",
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "lim": {
+      "kicker": "06 · Limits",
+      "title": "Where Pantograph breaks",
+      "l1T": "Animations in px",
+      "l1X": "JS animation libraries such as GSAP set coordinates and sizes in px directly. Those values don’t scale with the window. After the animation, recalculate the final positions and sizes in rem.",
+      "l2T": "Custom breakpoints",
+      "l2X": "If the grid switches at widths other than 500 and 1152 px while the scale switches there, the tablet grid meets the mobile scale in between. Use the boundaries from the CSS.",
+      "l3T": "Third-party rem",
+      "l3X": "1rem on the page is about 1 px, not 16. Third-party widgets and styles that assume 16 px per rem become tiny. Convert their sizes to px or to the mockup scale."
+    },
+    "foot": {
+      "whyT": "Why “pantograph”",
+      "whyX": "A pantograph is a drawing instrument that copies a picture at a different scale. Same here: the Figma mockup is carried over to a screen of any width at the right scale.",
+      "repo": "Source on GitHub"
+    },
+    "meta": {
+      "title": "Pantograph Layout — the mockup doesn’t reflow, it scales",
+      "description": "A layout technique that makes a page look like its Figma mockup at any width inside a breakpoint. The CSS, the formula, tips for designers and a skill for AI agents.",
+      "skip": "Skip to content",
+      "navLabel": "Sections",
+      "cmpTabs": "Compare the options"
+    }
+  },
+  "mini": {
+    "brand": "Hotel search",
+    "menu": "Menu",
+    "city": "Istanbul",
+    "dates": "12–15 October · 2 guests",
+    "where": "Where to?",
+    "d1": "12 Oct",
+    "d2": "15 Oct",
+    "dShort": "12–15 Oct",
+    "dLong": "12–15 October",
+    "guests": "2 guests",
+    "search": "Search hotels",
+    "searchShort": "Search",
+    "popular": "Popular hotels",
+    "nav": [
+      "Hotels",
+      "Apartments",
+      "Tours",
+      "Business"
+    ],
+    "login": "Sign in",
+    "hotels": [
+      {
+        "n": "Galata Residence",
+        "m": "8.9 · 1.2 km from center",
+        "p": "from €85"
+      },
+      {
+        "n": "Bosphorus View",
+        "m": "9.2 · on the waterfront",
+        "p": "from €112"
+      },
+      {
+        "n": "Old Town",
+        "m": "8.6 · 400 m to Hagia Sophia",
+        "p": "from €68"
+      },
+      {
+        "n": "Kadıköy Loft",
+        "m": "8.7 · Asian side",
+        "p": "from €71"
+      }
+    ]
+  }
+}

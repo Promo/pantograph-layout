@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="{{lang.code}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{t.meta.title}}</title>
+<meta name="description" content="{{t.meta.description}}">
+<meta property="og:title" content="{{t.meta.title}}">
+<meta property="og:description" content="{{t.meta.description}}">
+<meta name="theme-color" content="#000000">
+{{{hreflang}}}
+<link rel="icon" href="{{base}}assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{{base}}assets/pantograph.css">
+<link rel="stylesheet" href="{{base}}assets/fonts.css">
+<link rel="stylesheet" href="{{base}}assets/site.css">
+<script src="{{base}}assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">{{t.meta.skip}}</a>
+
+<header class="header">
+  <div class="wrap header__inner">
+    <a class="brand" href="{{home}}">{{{icon_logo}}}<span>{{t.brand}}</span></a>
+    <nav class="nav" aria-label="{{t.meta.navLabel}}">
+      <a href="#idea">{{t.nav.idea}}</a>
+      <a href="#algo">{{t.nav.algo}}</a>
+      <a href="#design">{{t.nav.design}}</a>
+      <a href="#code">{{t.nav.code}}</a>
+      <a href="#skill">{{t.nav.skill}}</a>
+      <a href="#limits">{{t.nav.limits}}</a>
+    </nav>
+    <div class="lang" data-lang>
+      <button class="lang__btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="{{t.langLabel}}: {{lang.label}}" data-lang-btn>{{{icon_globe}}}<span>{{lang.short}}</span>{{{icon_chevron}}}</button>
+      <ul class="lang__menu" id="lang-menu" hidden data-lang-menu>
+{{{lang_items}}}
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__inner">
+    <div class="hero__head">
+      <p class="hero__kicker">{{t.hero.kicker}}</p>
+      <h1 class="hero__title" id="hero-title"><span>{{t.hero.titleA}}</span> <span class="accent">{{t.hero.titleB}}</span></h1>
+      <div class="hero__row">
+        <p class="hero__lead">{{t.hero.lead}}</p>
+        <div class="hero__controls">
+          <p class="hero__hint">{{t.hero.hint}}</p>
+          <button class="btn-play" type="button" data-play data-state="playing">{{{icon_pause}}}{{{icon_play}}}<span data-play-label>{{t.hero.pause}}</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo" data-demo>
+      <div class="demo__stage" data-stage>
+        <div class="demo__frame" data-frame aria-hidden="true"><div class="demo__screen" data-screen inert></div></div>
+        <div class="demo__graph" data-graph aria-hidden="true">
+          <svg class="demo__svg" data-svg xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <path class="g-grid" data-path="grid"></path>
+            <path class="g-borders" data-path="borders"></path>
+            <path class="g-one" data-path="one"></path>
+            <path class="g-full" data-path="full"></path>
+            <path class="g-trail" data-path="trail"></path>
+            <path class="g-dots" data-path="dots"></path>
+            <circle class="g-marker" data-marker-dot r="7"></circle>
+          </svg>
+          <div data-labels></div>
+        </div>
+        <div class="demo__marker" data-marker aria-hidden="true"></div>
+        <div data-bands aria-hidden="true"></div>
+        <input class="scrub" type="range" min="320" max="1920" step="1" value="{{hero0.vw}}" data-scrub aria-label="{{t.hero.slider}}">
+      </div>
+      <ul class="legend" aria-hidden="true">
+        <li><i class="sw sw--m"></i>{{t.bp.m}}</li>
+        <li><i class="sw sw--t"></i>{{t.bp.t}}</li>
+        <li><i class="sw sw--d"></i>{{t.bp.d}}</li>
+      </ul>
+      <div class="readouts">
+        <div class="ro ro--vw"><span class="ro__label">{{t.hero.vw}}</span><span class="ro__value"><span data-out="vw">{{hero0.vw}}</span> px</span></div>
+        <div class="ro ro--bp"><span class="ro__label">{{t.hero.bp}}</span><span class="ro__value"><span data-out="bpName">{{hero0.bpName}}</span> · <span data-out="bpVw">{{hero0.bpVw}}</span></span></div>
+        <div class="ro ro--rem"><span class="ro__label">{{t.hero.rem}}</span><span class="ro__value"><span class="desk">1rem = </span><span data-out="rem">{{hero0.rem}}</span> px</span></div>
+        <div class="ro ro--px"><span class="ro__label">{{t.hero.px24}}</span><span class="ro__value"><span class="aa" data-aa aria-hidden="true">Aa</span><span><span data-out="px24">{{hero0.px24}}</span> px</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="idea" aria-labelledby="idea-title">
+  <div class="wrap sec__inner cmp">
+    <div class="sec__head">
+      <p class="kicker"><i></i>{{t.cmp.kicker}}</p>
+      <h2 class="h2 cmp__title" id="idea-title">{{t.cmp.title}}</h2>
+      <p class="lead">{{t.cmp.lead}}</p>
+    </div>
+    <div class="cmp__tabs" role="group" aria-label="{{t.meta.cmpTabs}}">
+      <button class="cmp__tab" type="button" aria-pressed="true" data-tab="0">{{t.cmp.f1t}}</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="1">{{t.cmp.f2t}}</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="2">{{t.cmp.f3t}}</button>
+    </div>
+    <div class="cmp__items" data-active="0" data-cmp>
+      <figure class="cmp__item">
+        <p class="cmp__w">375 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="375" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">{{t.cmp.f1t}}</span><span class="cmp__x">{{t.cmp.f1x}}</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="480px" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">{{t.cmp.f2t}}</span><span class="cmp__x">{{t.cmp.f2x}}</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame cmp__frame--accent" aria-hidden="true"><div class="cmp__mini" data-mini="480" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">{{t.cmp.f3t}}</span><span class="cmp__x">{{t.cmp.f3x}}</span></figcaption>
+      </figure>
+    </div>
+    <div class="cmp__sum">
+      <div class="card card--grey"><h3 class="card__t">{{t.cmp.adT}}</h3><p class="card__x">{{t.cmp.adX}}</p></div>
+      <div class="card card--violet"><h3 class="card__t">{{t.cmp.pgT}}</h3><p class="card__x">{{t.cmp.pgX}}</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="algo" aria-labelledby="algo-title">
+  <div class="wrap sec__inner algo">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>{{t.algo.kicker}}</p>
+      <h2 class="h2" id="algo-title">{{t.algo.title}}</h2>
+      <p class="lead lead--narrow">{{t.algo.lead}}</p>
+    </div>
+
+    <div class="s1">
+      <div class="s1__text">
+        <span class="num">1</span>
+        <h3 class="h3">{{t.algo.s1T}}</h3>
+        <p class="p">{{t.algo.s1X}}</p>
+        <div class="tbl" role="table">
+          <div class="tbl__row tbl__head" role="row"><span role="columnheader">{{t.algo.thWin}}</span><span role="columnheader">{{t.algo.thMock}}</span><span role="columnheader">{{t.algo.thRem}}</span></div>
+          <div class="tbl__row" role="row"><span role="cell">{{t.algo.r1}}</span><b role="cell">375</b><span role="cell">{{t.algo.r1rem}}</span></div>
+          <div class="tbl__row" role="row"><span role="cell">{{t.algo.r2}}</span><b role="cell">768</b><span role="cell">{{t.algo.r2rem}}</span></div>
+          <div class="tbl__row" role="row"><span role="cell">{{t.algo.r3}}</span><b role="cell">1440</b><span role="cell">{{t.algo.r3rem}}</span></div>
+        </div>
+        <p class="note">{{t.algo.s1N}}</p>
+      </div>
+      <pre class="code"><code>{{{code_bp}}}</code></pre>
+    </div>
+
+    <div class="s2">
+      <div class="s2__head">
+        <span class="num">2</span>
+        <h3 class="h3">{{t.algo.s2T}}</h3>
+        <p class="p">{{t.algo.s2X}}</p>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>{{{code_c1}}}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">{{t.algo.c1T}}</h4><p class="chunk__x">{{t.algo.c1X}}</p><p class="chunk__e">{{t.algo.c1E1}}<br>{{t.algo.c1E2}}</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>{{{code_c2}}}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">{{t.algo.c2T}}</h4><p class="chunk__x">{{t.algo.c2X}}</p><p class="chunk__e">{{t.algo.c2E1}}<br>{{t.algo.c2E2}}</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>{{{code_c3}}}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">{{t.algo.c3T}}</h4><p class="chunk__x">{{t.algo.c3X}}</p><p class="chunk__e">{{t.algo.c3E1}}<br>{{t.algo.c3E2}}</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>{{{code_c4}}}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">{{t.algo.c4T}}</h4><p class="chunk__x">{{t.algo.c4X}}</p></div>
+      </div>
+    </div>
+
+    <div class="s3">
+      <div class="s3__head"><span class="num">3</span><h3 class="s3__t">{{t.algo.s3T}}</h3></div>
+<pre class="deriv deriv--short">slope = (max-font-size − min-font-size)
+        / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw)
+      + min-vw / balance-point
+      = 100vw / balance-point</pre>
+<pre class="deriv deriv--long">slope = (max-font-size − min-font-size) / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw) + min-vw / balance-point
+      = 100vw / balance-point</pre>
+      <p class="s3__big">{{t.algo.s3Big}}</p>
+      <p class="s3__x">{{t.algo.s3X}}</p>
+      <ul class="chips">
+{{{ex_chips}}}
+      </ul>
+    </div>
+
+    <div class="live" data-live>
+      <div class="live__side">
+        <h3 class="h3">{{t.algo.lvT}}</h3>
+        <p class="live__p">{{t.algo.lvX}}</p>
+        <div class="presets" data-presets>
+{{{preset_buttons}}}
+        </div>
+        <div class="live__now">
+          <span class="live__vw"><span data-out="vw">{{hero0.vw}}</span> px</span>
+          <span class="live__bp"><span data-out="bpName">{{hero0.bpName}}</span> · {{t.algo.lvMock}} <span data-out="bpVw">{{hero0.bpVw}}</span> px</span>
+        </div>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt class="row__l">{{t.algo.lvVars}}</dt><dd class="row__v" data-out="vars">{{hero0.vars}}</dd></div>
+        <div class="row"><dt class="row__l">min-font-size</dt><dd class="row__v" data-out="minLine">{{hero0.minLine}}</dd></div>
+        <div class="row"><dt class="row__l">max-font-size</dt><dd class="row__v" data-out="maxLine">{{hero0.maxLine}}</dd></div>
+        <div class="row"><dt class="row__l">slope</dt><dd class="row__v" data-out="slopeLine">{{hero0.slopeLine}}</dd></div>
+        <div class="row"><dt class="row__l">fluid-font-size</dt><dd class="row__v" data-out="fluidLine">{{hero0.fluidLine}}</dd></div>
+        <div class="row"><dt class="row__l">clamp</dt><dd class="row__v"><span data-out="clampLine">{{hero0.clampLine}}</span><span class="clamped" data-clamped hidden>{{t.algo.lvClamped}}</span></dd></div>
+        <div class="row row--res"><dt class="row__l">{{t.algo.lvRes}}</dt><dd class="row__v"><span>1rem = <span data-out="rem">{{hero0.rem}}</span> px</span><span class="sep"> · </span><span>24rem = <span data-out="px24">{{hero0.px24}}</span> px</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="s4">
+      <div class="s4__head"><span class="num">4</span><h3 class="h3">{{t.algo.s4T}}</h3></div>
+      <div class="cards3">
+        <div class="wcard"><h4 class="wcard__t">{{t.algo.e1T}}</h4><p class="wcard__x">{{t.algo.e1X}}</p></div>
+        <div class="wcard"><h4 class="wcard__t">{{t.algo.e2T}}</h4><p class="wcard__x">{{t.algo.e2X}}</p></div>
+        <div class="wcard"><h4 class="wcard__t">{{t.algo.e3T}}</h4><p class="wcard__x">{{t.algo.e3X}}</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="design" aria-labelledby="design-title">
+  <div class="wrap sec__inner des">
+    <div class="sec__head">
+      <p class="kicker"><i></i>{{t.des.kicker}}</p>
+      <h2 class="h2" id="design-title">{{t.des.title}}</h2>
+    </div>
+    <div class="des__grid">
+      <div class="gcard">
+        <h3 class="gcard__t">{{t.des.a1T}}</h3>
+        <p class="gcard__x">{{t.des.a1X}}</p>
+        <div class="devices" aria-hidden="true">
+          <div class="dev dev--m"><div class="dev__box"></div><span class="dev__n">375</span><span class="dev__r">{{t.algo.r1}}</span></div>
+          <div class="dev dev--t"><div class="dev__box"></div><span class="dev__n">768</span><span class="dev__r">{{t.algo.r2}}</span></div>
+          <div class="dev dev--d"><div class="dev__box"></div><span class="dev__n">1440</span><span class="dev__r">{{t.algo.r3}}</span></div>
+        </div>
+      </div>
+      <div class="gcard">
+        <h3 class="gcard__t">{{t.des.a2T}}</h3>
+        <p class="gcard__x">{{t.des.a2X}}</p>
+        <div class="etbl" role="table">
+          <div class="etbl__row etbl__head" role="row"><span role="columnheader">{{t.des.thWin}}</span><span role="columnheader">{{t.des.thMock}}</span><span role="columnheader">{{t.des.thScale}}</span><span role="columnheader">{{t.des.thText}}</span></div>
+{{{edge_rows}}}
+        </div>
+      </div>
+    </div>
+    <div class="des__off">
+      <h3 class="h3">{{t.des.offT}}</h3>
+      <div class="des__bgrid">
+        <div class="ocard">
+          <h4 class="gcard__t">{{t.des.b1T}}</h4>
+          <p class="gcard__x">{{t.des.b1X}}</p>
+          <pre class="code code--sm"><code>{{{code_ovr}}}</code></pre>
+          <p class="note">{{t.des.b1N}}</p>
+        </div>
+        <div class="ocard">
+          <h4 class="gcard__t">{{t.des.b2T}}</h4>
+          <p class="gcard__x">{{t.des.b2X1}}</p>
+          <p class="gcard__x">{{t.des.b2X2}}</p>
+          <pre class="code code--sm"><code>{{{code_nt}}}</code></pre>
+          <p class="note">{{t.des.b2N}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="code" aria-labelledby="code-title">
+  <div class="wrap sec__inner codes">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>{{t.code.kicker}}</p>
+      <h2 class="h2" id="code-title">{{t.code.title}}</h2>
+    </div>
+    <div class="codegrid">
+      <div class="scard scard--1">
+        <span class="num num--s">1</span>
+        <h3 class="scard__t">{{t.code.s1T}}</h3>
+        <p class="scard__x">{{t.code.s1X}}</p>
+        <button class="btn-copy" type="button" data-copy="css" data-label="{{t.code.copy}}" data-done="{{t.code.copied}}">{{{icon_copy}}}<span>{{t.code.copy}}</span></button>
+      </div>
+      <pre class="code code--full" id="css-full"><code>{{{code_all}}}</code></pre>
+      <div class="scard scard--2">
+        <span class="num num--s">2</span>
+        <h3 class="scard__t">{{t.code.s2T}}</h3>
+        <p class="scard__x">{{t.code.s2X}}</p>
+      </div>
+      <div class="scard scard--3">
+        <span class="num num--s">3</span>
+        <h3 class="scard__t">{{t.code.s3T}}</h3>
+        <p class="scard__x">{{t.code.s3X}}</p>
+      </div>
+    </div>
+    <div class="ex">
+      <h3 class="h3">{{t.code.exT}}</h3>
+      <div class="ex__grid">
+        <pre class="code"><code>{{{code_ex}}}</code></pre>
+        <div class="notes">
+          <div class="note-i"><h4 class="note-i__t">{{t.code.n1T}}</h4><p class="note-i__x">{{t.code.n1X}}</p></div>
+          <div class="note-i"><h4 class="note-i__t">{{t.code.n2T}}</h4><p class="note-i__x">{{t.code.n2X}}</p></div>
+          <div class="note-i"><h4 class="note-i__t">{{t.code.n3T}}</h4><p class="note-i__x">{{t.code.n3X}}</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--black" id="skill" aria-labelledby="skill-title">
+  <div class="wrap sec__inner skill">
+    <div class="skill__text">
+      <p class="kicker"><i></i>{{t.skill.kicker}}</p>
+      <h2 class="h2" id="skill-title">{{t.skill.title}}</h2>
+      <p class="skill__lead">{{t.skill.lead}}</p>
+      <div class="skill__in">
+        <p class="skill__inT">{{t.skill.inT}}</p>
+        <ul class="ticks">
+{{{skill_items}}}
+        </ul>
+      </div>
+      <div class="skill__btns">
+        <a class="btn btn--violet" href="{{base}}SKILL.md" download="SKILL.md">{{{icon_download}}}<span>{{t.skill.dl}}</span></a>
+        <button class="btn btn--outline" type="button" data-copy="skill" data-src="{{base}}SKILL.md" data-label="{{t.skill.copy}}" data-done="{{t.skill.copied}}"><span>{{t.skill.copy}}</span></button>
+      </div>
+    </div>
+    <div class="preview">
+      <div class="preview__bar">{{{icon_file}}}<span>SKILL.md</span></div>
+      <pre class="code code--skill"><code>{{{code_skill}}}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="limits" aria-labelledby="limits-title">
+  <div class="wrap sec__inner lim">
+    <div class="sec__head">
+      <p class="kicker"><i></i>{{t.lim.kicker}}</p>
+      <h2 class="h2" id="limits-title">{{t.lim.title}}</h2>
+    </div>
+    <div class="lim__cards">
+      <div class="wcard wcard--grey"><h3 class="wcard__t">{{t.lim.l1T}}</h3><p class="wcard__x">{{t.lim.l1X}}</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">{{t.lim.l2T}}</h3><p class="wcard__x">{{t.lim.l2X}}</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">{{t.lim.l3T}}</h3><p class="wcard__x">{{t.lim.l3X}}</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="brand" href="{{home}}">{{{icon_logo}}}<span>{{t.brand}}</span></a>
+    <div class="footer__why">
+      <p class="footer__whyT">{{t.foot.whyT}}</p>
+      <p class="footer__whyX">{{t.foot.whyX}}</p>
+      <p class="footer__repo"><a href="https://github.com/Promo/pantograph-layout">{{t.foot.repo}}</a></p>
+    </div>
+  </div>
+</footer>
+
+<script type="application/json" id="page-data">{{{page_data}}}</script>
+</body>
+</html>

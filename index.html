@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantograph Layout — макет не перестраивается, а масштабируется</title>
+<meta name="description" content="Техника вёрстки, при которой страница внутри брейкпоинта выглядит как макет в Figma на любой ширине экрана. CSS, формула, советы дизайнерам и скилл для AI-агентов.">
+<meta property="og:title" content="Pantograph Layout — макет не перестраивается, а масштабируется">
+<meta property="og:description" content="Техника вёрстки, при которой страница внутри брейкпоинта выглядит как макет в Figma на любой ширине экрана. CSS, формула, советы дизайнерам и скилл для AI-агентов.">
+<meta name="theme-color" content="#000000">
+<link rel="alternate" hreflang="ru" href="https://promo.github.io/pantograph-layout/">
+<link rel="alternate" hreflang="en" href="https://promo.github.io/pantograph-layout/en/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/pantograph.css">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к содержанию</a>
+
+<header class="header">
+  <div class="wrap header__inner">
+    <a class="brand" href="./"><svg class="i-logo" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="17" width="9" height="9" rx="1.5" fill="#8377F1"/><path d="M6.5 21.5L23 5" stroke="#8377F1" stroke-width="2" stroke-dasharray="3 3"/></svg><span>Pantograph Layout</span></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#idea">Суть</a>
+      <a href="#algo">Алгоритм</a>
+      <a href="#design">Дизайнерам</a>
+      <a href="#code">Фронтендерам</a>
+      <a href="#skill">Скилл для AI</a>
+      <a href="#limits">Ограничения</a>
+    </nav>
+    <div class="lang" data-lang>
+      <button class="lang__btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="Язык: Русский" data-lang-btn><svg class="i-globe" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="9" r="7.25"/><path d="M1.75 9h14.5M9 1.75c2 2 3 4.4 3 7.25s-1 5.25-3 7.25M9 1.75c-2 2-3 4.4-3 7.25s1 5.25 3 7.25"/></svg><span>RU</span><svg class="i-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5l3 3 3-3"/></svg></button>
+      <ul class="lang__menu" id="lang-menu" hidden data-lang-menu>
+        <li><a href="./" hreflang="ru" lang="ru" aria-current="true">Русский<small>RU</small></a></li>
+        <li><a href="en/" hreflang="en" lang="en">English<small>EN</small></a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__inner">
+    <div class="hero__head">
+      <p class="hero__kicker">Вёрстка для дизайнеров и фронтендеров</p>
+      <h1 class="hero__title" id="hero-title"><span>Макет не перестраивается.</span> <span class="accent">Он масштабируется.</span></h1>
+      <div class="hero__row">
+        <p class="hero__lead">Внутри брейкпоинта страница на любой ширине выглядит как макет в Figma: те же пропорции, переносы строк и композиция. Меняется только масштаб.</p>
+        <div class="hero__controls">
+          <p class="hero__hint">Двигайте ползунок или смотрите анимацию</p>
+          <button class="btn-play" type="button" data-play data-state="playing"><svg class="i-pause" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="4" height="14" rx="1"/><rect x="11" y="2" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M4 2.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 4 2.5z"/></svg><span data-play-label>Пауза</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo" data-demo>
+      <div class="demo__stage" data-stage>
+        <div class="demo__frame" data-frame aria-hidden="true"><div class="demo__screen" data-screen inert></div></div>
+        <div class="demo__graph" data-graph aria-hidden="true">
+          <svg class="demo__svg" data-svg xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <path class="g-grid" data-path="grid"></path>
+            <path class="g-borders" data-path="borders"></path>
+            <path class="g-one" data-path="one"></path>
+            <path class="g-full" data-path="full"></path>
+            <path class="g-trail" data-path="trail"></path>
+            <path class="g-dots" data-path="dots"></path>
+            <circle class="g-marker" data-marker-dot r="7"></circle>
+          </svg>
+          <div data-labels></div>
+        </div>
+        <div class="demo__marker" data-marker aria-hidden="true"></div>
+        <div data-bands aria-hidden="true"></div>
+        <input class="scrub" type="range" min="320" max="1920" step="1" value="412" data-scrub aria-label="Ширина окна">
+      </div>
+      <ul class="legend" aria-hidden="true">
+        <li><i class="sw sw--m"></i>Мобильный</li>
+        <li><i class="sw sw--t"></i>Планшет</li>
+        <li><i class="sw sw--d"></i>Десктоп</li>
+      </ul>
+      <div class="readouts">
+        <div class="ro ro--vw"><span class="ro__label">Ширина окна</span><span class="ro__value"><span data-out="vw">412</span> px</span></div>
+        <div class="ro ro--bp"><span class="ro__label">Брейкпоинт</span><span class="ro__value"><span data-out="bpName">Мобильный</span> · <span data-out="bpVw">375</span></span></div>
+        <div class="ro ro--rem"><span class="ro__label">1rem</span><span class="ro__value"><span class="desk">1rem = </span><span data-out="rem">1,099</span> px</span></div>
+        <div class="ro ro--px"><span class="ro__label">Шрифт 24px из макета</span><span class="ro__value"><span class="aa" data-aa aria-hidden="true">Aa</span><span><span data-out="px24">26,4</span> px</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="idea" aria-labelledby="idea-title">
+  <div class="wrap sec__inner cmp">
+    <div class="sec__head">
+      <p class="kicker"><i></i>01 · Суть</p>
+      <h2 class="h2 cmp__title" id="idea-title">Чем Pantograph отличается от обычной адаптивной вёрстки</h2>
+      <p class="lead">Возьмём мобильный макет на 375 px и откроем страницу на телефоне шириной 480 px.</p>
+    </div>
+    <div class="cmp__tabs" role="group" aria-label="Сравнение вариантов">
+      <button class="cmp__tab" type="button" aria-pressed="true" data-tab="0">Макет в Figma</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="1">Вёрстка в px</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="2">Pantograph</button>
+    </div>
+    <div class="cmp__items" data-active="0" data-cmp>
+      <figure class="cmp__item">
+        <p class="cmp__w">375 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="375" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Макет в Figma</span><span class="cmp__x">Точка отсчёта.</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="480px" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Вёрстка в px</span><span class="cmp__x">Шрифты и отступы остались как в макете, блоки растянулись по ширине. Пропорции уже не те, что рисовал дизайнер.</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame cmp__frame--accent" aria-hidden="true"><div class="cmp__mini" data-mini="480" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Pantograph</span><span class="cmp__x">Всё увеличено в 480 / 375 = 1,28 раза. Это тот же макет, только крупнее.</span></figcaption>
+      </figure>
+    </div>
+    <div class="cmp__sum">
+      <div class="card card--grey"><h3 class="card__t">Адаптивная вёрстка</h3><p class="card__x">Размеры в px фиксированы. Между брейкпоинтами блоки растягиваются и сжимаются, поэтому каждую промежуточную ширину приходится проверять отдельно.</p></div>
+      <div class="card card--violet"><h3 class="card__t">Pantograph layout</h3><p class="card__x">Размеры в rem, а 1rem зависит от ширины окна. Любая ширина внутри брейкпоинта — это макет в масштабе.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="algo" aria-labelledby="algo-title">
+  <div class="wrap sec__inner algo">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>02 · Алгоритм</p>
+      <h2 class="h2" id="algo-title">Один CSS и одна формула</h2>
+      <p class="lead lead--narrow">CSS задаёт брейкпоинты и считает font-size для html. Вся вёрстка пишется в rem, поэтому растёт и уменьшается вслед за ним.</p>
+    </div>
+
+    <div class="s1">
+      <div class="s1__text">
+        <span class="num">1</span>
+        <h3 class="h3">Брейкпоинты: три макета — три диапазона</h3>
+        <p class="p">Для каждого диапазона ширин задаются три числа. --balance-point — точка баланса: ширина макета в Figma, на которой 1rem ровно 1px. --min-vw и --max-vw — края диапазона. Числа записаны без единиц, чтобы их можно было делить друг на друга.</p>
+        <div class="tbl" role="table">
+          <div class="tbl__row tbl__head" role="row"><span role="columnheader">Ширина окна</span><span role="columnheader">Макет</span><span role="columnheader">1rem на краях</span></div>
+          <div class="tbl__row" role="row"><span role="cell">до 499 px</span><b role="cell">375</b><span role="cell">0,853 → 1,333 px</span></div>
+          <div class="tbl__row" role="row"><span role="cell">500–1151 px</span><b role="cell">768</b><span role="cell">0,651 → 1,5 px</span></div>
+          <div class="tbl__row" role="row"><span role="cell">от 1152 px</span><b role="cell">1440</b><span role="cell">0,8 → 1,111 px</span></div>
+        </div>
+        <p class="note">Первый медиа-запрос начинается с 0 px, но расчёт идёт от 320: на более узких экранах 1rem не опускается ниже 0,853 px.</p>
+      </div>
+      <pre class="code"><code><span class="c-com">/* Breakpoints */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 320;
+    <span class="c-prop">--max-vw</span>: 500;
+    <span class="c-prop">--balance-point</span>: 375;
+  }
+}
+@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 500;
+    <span class="c-prop">--max-vw</span>: 1152;
+    <span class="c-prop">--balance-point</span>: 768;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 1152;
+    <span class="c-prop">--max-vw</span>: 1600;
+    <span class="c-prop">--balance-point</span>: 1440;
+  }
+}</code></pre>
+    </div>
+
+    <div class="s2">
+      <div class="s2__head">
+        <span class="num">2</span>
+        <h3 class="h3">Считаем размер 1rem</h3>
+        <p class="p">CSS строит прямую: при ширине окна min-vw размер 1rem минимальный, при max-vw — максимальный, между ними растёт равномерно. Разберём по частям. Числа в примерах — для планшетного диапазона.</p>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>:root {
+  <span class="c-prop">--min-font-size</span>: calc(var(--min-vw) / var(--balance-point));
+  <span class="c-prop">--max-font-size</span>: calc(var(--max-vw) / var(--balance-point));</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Размер 1rem на краях диапазона</h4><p class="chunk__x">На ширине макета 1rem = 1px. На краю диапазона он во столько раз меньше или больше, во сколько край меньше или больше макета.</p><p class="chunk__e">500 / 768 = 0,651 px<br>1152 / 768 = 1,5 px</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--diff-font-size</span>: calc(var(--max-font-size) - var(--min-font-size));
+  <span class="c-prop">--diff-vw</span>: calc(var(--max-vw) - var(--min-vw));
+  <span class="c-prop">--slope</span>: calc(var(--diff-font-size) / var(--diff-vw));</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Наклон прямой</h4><p class="chunk__x">На сколько px вырастает 1rem с каждым пикселем ширины окна.</p><p class="chunk__e">(1,5 − 0,651) / (1152 − 500)<br>= 0,001302 = 1 / 768</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--max-font-size-px</span>: calc(var(--max-font-size) * 1px);
+  <span class="c-prop">--min-font-size-px</span>: calc(var(--min-font-size) * 1px);
+  <span class="c-prop">--min-vw-px</span>: calc(var(--min-vw) * 1px);
+  <span class="c-prop">--fluid-font-size-px</span>: calc(
+    var(--slope) * (100vw - var(--min-vw-px)) + var(--min-font-size-px)
+  );</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Уравнение прямой</h4><p class="chunk__x">Прямая через точку (min-vw; min-font-size) с найденным наклоном. 100vw — текущая ширина окна. Умножение на 1px переводит безразмерные числа в пиксели.</p><p class="chunk__e">Окно 900 px:<br>0,001302 × (900 − 500) + 0,651 = 1,172 px</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--clamp-scaling-fs</span>: clamp(
+    var(--min-font-size-px),
+    var(--fluid-font-size-px),
+    var(--max-font-size-px)
+  );
+}
+
+html {
+  <span class="c-prop">font-size</span>: var(--clamp-scaling-fs);
+}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Ограничение и применение</h4><p class="chunk__x">clamp не выпускает размер за края диапазона. Внутри диапазона он ничего не меняет, а срабатывает шире 1600 px и уже 320 px. Результат становится font-size у html, и от него считается каждый rem на странице.</p></div>
+      </div>
+    </div>
+
+    <div class="s3">
+      <div class="s3__head"><span class="num">3</span><h3 class="s3__t">Если сократить формулу</h3></div>
+<pre class="deriv deriv--short">slope = (max-font-size − min-font-size)
+        / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw)
+      + min-vw / balance-point
+      = 100vw / balance-point</pre>
+<pre class="deriv deriv--long">slope = (max-font-size − min-font-size) / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw) + min-vw / balance-point
+      = 100vw / balance-point</pre>
+      <p class="s3__big">1rem = ширина окна ÷ ширина макета</p>
+      <p class="s3__x">Это всё, что делает алгоритм. Остальные переменные нужны, чтобы CSS мог посчитать формулу, а clamp — чтобы значение не вышло за края диапазона.</p>
+      <ul class="chips">
+        <li>375 px → 1 px</li>
+        <li>412 px → 1,099 px</li>
+        <li>480 px → 1,28 px</li>
+        <li>1024 px → 1,333 px</li>
+      </ul>
+    </div>
+
+    <div class="live" data-live>
+      <div class="live__side">
+        <h3 class="h3">Посчитайте на своей ширине</h3>
+        <p class="live__p">Значения считаются для ширины из демо наверху. Выберите ширину здесь или вернитесь к ползунку.</p>
+        <div class="presets" data-presets>
+          <button type="button" data-vw="320" aria-pressed="false">320</button>
+          <button type="button" data-vw="375" aria-pressed="false">375</button>
+          <button type="button" data-vw="499" aria-pressed="false">499</button>
+          <button type="button" data-vw="500" aria-pressed="false">500</button>
+          <button type="button" data-vw="768" aria-pressed="false">768</button>
+          <button type="button" data-vw="1151" aria-pressed="false">1151</button>
+          <button type="button" data-vw="1152" aria-pressed="false">1152</button>
+          <button type="button" data-vw="1440" aria-pressed="false">1440</button>
+          <button type="button" data-vw="1600" aria-pressed="false">1600</button>
+          <button type="button" data-vw="1920" aria-pressed="false">1920</button>
+        </div>
+        <div class="live__now">
+          <span class="live__vw"><span data-out="vw">412</span> px</span>
+          <span class="live__bp"><span data-out="bpName">Мобильный</span> · макет <span data-out="bpVw">375</span> px</span>
+        </div>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt class="row__l">Переменные</dt><dd class="row__v" data-out="vars">min-vw 320 · max-vw 500 · balance-point 375</dd></div>
+        <div class="row"><dt class="row__l">min-font-size</dt><dd class="row__v" data-out="minLine">320 / 375 = 0,853 px</dd></div>
+        <div class="row"><dt class="row__l">max-font-size</dt><dd class="row__v" data-out="maxLine">500 / 375 = 1,333 px</dd></div>
+        <div class="row"><dt class="row__l">slope</dt><dd class="row__v" data-out="slopeLine">(1,333 − 0,853) / (500 − 320) = 0,002667</dd></div>
+        <div class="row"><dt class="row__l">fluid-font-size</dt><dd class="row__v" data-out="fluidLine">0,002667 × (412 − 320) + 0,853 = 1,099 px</dd></div>
+        <div class="row"><dt class="row__l">clamp</dt><dd class="row__v"><span data-out="clampLine">clamp(0,853, 1,099, 1,333) = 1,099 px</span><span class="clamped" data-clamped hidden>Окно шире 1600 px: сработало ограничение сверху</span></dd></div>
+        <div class="row row--res"><dt class="row__l">Итог</dt><dd class="row__v"><span>1rem = <span data-out="rem">1,099</span> px</span><span class="sep"> · </span><span>24rem = <span data-out="px24">26,4</span> px</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="s4">
+      <div class="s4__head"><span class="num">4</span><h3 class="h3">Что происходит на границах</h3></div>
+      <div class="cards3">
+        <div class="wcard"><h4 class="wcard__t">Смена брейкпоинта</h4><p class="wcard__x">На 1151 px планшетный макет увеличен в 1,5 раза. На 1152 px включается десктопный в масштабе 0,8. Раскладка сменилась, и новый макет начинает с меньшего масштаба. Это ожидаемый скачок.</p></div>
+        <div class="wcard"><h4 class="wcard__t">Шире 1600 px</h4><p class="wcard__x">clamp останавливает рост: 1rem держится на 1,111 px. Шрифты и отступы дальше не увеличиваются, лишняя ширина уходит в поля.</p></div>
+        <div class="wcard"><h4 class="wcard__t">Уже 320 px</h4><p class="wcard__x">1rem не опускается ниже 0,853 px. Мобильный макет перестаёт уменьшаться.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="design" aria-labelledby="design-title">
+  <div class="wrap sec__inner des">
+    <div class="sec__head">
+      <p class="kicker"><i></i>03 · Дизайнерам</p>
+      <h2 class="h2" id="design-title">Что это значит для дизайнера</h2>
+    </div>
+    <div class="des__grid">
+      <div class="gcard">
+        <h3 class="gcard__t">Рисуйте три макета: 375, 768 и 1440 px</h3>
+        <p class="gcard__x">Каждый макет покрывает свой диапазон ширин. Промежуточные ширины рисовать не нужно: это тот же макет в масштабе.</p>
+        <div class="devices" aria-hidden="true">
+          <div class="dev dev--m"><div class="dev__box"></div><span class="dev__n">375</span><span class="dev__r">до 499 px</span></div>
+          <div class="dev dev--t"><div class="dev__box"></div><span class="dev__n">768</span><span class="dev__r">500–1151 px</span></div>
+          <div class="dev dev--d"><div class="dev__box"></div><span class="dev__n">1440</span><span class="dev__r">от 1152 px</span></div>
+        </div>
+      </div>
+      <div class="gcard">
+        <h3 class="gcard__t">Проверяйте крайние ширины</h3>
+        <p class="gcard__x">Сильнее всего макет уменьшается на 500 px: планшетный макет там в масштабе 0,65. Мелкий текст планшетного макета проверяйте на этой ширине.</p>
+        <div class="etbl" role="table">
+          <div class="etbl__row etbl__head" role="row"><span role="columnheader">Окно</span><span role="columnheader">Макет</span><span role="columnheader">Масштаб</span><span role="columnheader">Текст 14px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">320</span><span role="cell">375</span><span role="cell">× 0,853</span><span role="cell">11,9 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">499</span><span role="cell">375</span><span role="cell">× 1,331</span><span role="cell">18,6 px</span></div>
+          <div class="etbl__row is-strong" role="row"><span role="cell">500</span><span role="cell">768</span><span role="cell">× 0,651</span><span role="cell">9,1 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1151</span><span role="cell">768</span><span role="cell">× 1,499</span><span role="cell">21,0 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1152</span><span role="cell">1440</span><span role="cell">× 0,8</span><span role="cell">11,2 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1600+</span><span role="cell">1440</span><span role="cell">× 1,111</span><span role="cell">15,6 px</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="des__off">
+      <h3 class="h3">Если макет нарисован не на ширине брейкпоинта</h3>
+      <div class="des__bgrid">
+        <div class="ocard">
+          <h4 class="gcard__t">Другая ширина макета</h4>
+          <p class="gcard__x">Десктоп нарисован на 1200, мобильный на 360? Пересчитывать числа руками не нужно. Укажите ширину своего макета в --balance-point, и 1rem снова равен 1px вашего макета. Края диапазонов и медиа-запросы не меняются.</p>
+          <pre class="code code--sm"><code><span class="c-com">/* after the CSS above */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 360;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 1200;
+  }
+}</code></pre>
+          <p class="note">Побочный эффект: на ширине брейкпоинта 1rem уже не равен 1px (на 1440 это 1,2 px). Точкой отсчёта становится макет.</p>
+        </div>
+        <div class="ocard">
+          <h4 class="gcard__t">Нет планшетного макета</h4>
+          <p class="gcard__x">Возьмите десктопную раскладку в масштабе около 0,75: для планшетного диапазона --balance-point = 768 / 0,75 = 1024. Честные 1200 дают на 768 px масштаб 0,64 и текст около 15 px — мелко.</p>
+          <p class="gcard__x">Чтобы контент не вылезал за 768 px, ширины контейнеров и колонок задайте в процентах. В rem оставьте шрифты, отступы, высоты и радиусы. Крупные иллюстрации уменьшите или сдвиньте отдельным правилом.</p>
+          <pre class="code code--sm"><code>@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 1024; /* 768 / 0.75 */
+  }
+}</code></pre>
+          <p class="note">Запишите принятые масштабы в README проекта, чтобы правило не потерялось.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="code" aria-labelledby="code-title">
+  <div class="wrap sec__inner codes">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>04 · Фронтендерам</p>
+      <h2 class="h2" id="code-title">Как верстать</h2>
+    </div>
+    <div class="codegrid">
+      <div class="scard scard--1">
+        <span class="num num--s">1</span>
+        <h3 class="scard__t">Добавьте CSS</h3>
+        <p class="scard__x">Один раз, глобально, до стилей страницы. Он задаёт font-size для html, поэтому влияет на каждый rem. Если так свёрстаны не все страницы, подключайте CSS только на нужных.</p>
+        <button class="btn-copy" type="button" data-copy="css" data-label="Скопировать CSS" data-done="Скопировано"><svg class="i-btn" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="6" width="9.5" height="9.5" rx="2"/><path d="M12 6V4a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 3 4v6.5A1.5 1.5 0 0 0 4.5 12H6"/></svg><span>Скопировать CSS</span></button>
+      </div>
+      <pre class="code code--full" id="css-full"><code><span class="c-com">/* Breakpoints */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 320;
+    <span class="c-prop">--max-vw</span>: 500;
+    <span class="c-prop">--balance-point</span>: 375;
+  }
+}
+@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 500;
+    <span class="c-prop">--max-vw</span>: 1152;
+    <span class="c-prop">--balance-point</span>: 768;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 1152;
+    <span class="c-prop">--max-vw</span>: 1600;
+    <span class="c-prop">--balance-point</span>: 1440;
+  }
+}
+
+<span class="c-com">/* Scaling */</span>
+:root {
+  <span class="c-prop">--min-font-size</span>: calc(var(--min-vw) / var(--balance-point));
+  <span class="c-prop">--max-font-size</span>: calc(var(--max-vw) / var(--balance-point));
+  <span class="c-prop">--diff-font-size</span>: calc(var(--max-font-size) - var(--min-font-size));
+  <span class="c-prop">--diff-vw</span>: calc(var(--max-vw) - var(--min-vw));
+  <span class="c-prop">--slope</span>: calc(var(--diff-font-size) / var(--diff-vw));
+  <span class="c-prop">--max-font-size-px</span>: calc(var(--max-font-size) * 1px);
+  <span class="c-prop">--min-font-size-px</span>: calc(var(--min-font-size) * 1px);
+  <span class="c-prop">--min-vw-px</span>: calc(var(--min-vw) * 1px);
+  <span class="c-prop">--fluid-font-size-px</span>: calc(
+    var(--slope) * (100vw - var(--min-vw-px)) + var(--min-font-size-px)
+  );
+  <span class="c-prop">--clamp-scaling-fs</span>: clamp(
+    var(--min-font-size-px),
+    var(--fluid-font-size-px),
+    var(--max-font-size-px)
+  );
+}
+
+html {
+  <span class="c-prop">font-size</span>: var(--clamp-scaling-fs);
+}</code></pre>
+      <div class="scard scard--2">
+        <span class="num num--s">2</span>
+        <h3 class="scard__t">Числа из Figma — в rem</h3>
+        <p class="scard__x">В макете 24px — в коде 24rem. Пересчитывать под каждую ширину не нужно, масштаб меняется сам.</p>
+      </div>
+      <div class="scard scard--3">
+        <span class="num num--s">3</span>
+        <h3 class="scard__t">Медиа-запросы — для смены раскладки</h3>
+        <p class="scard__x">Они нужны, если меняется сетка или размеры в макетах разные. Границы — те же 500 и 1152 px, что в CSS.</p>
+      </div>
+    </div>
+    <div class="ex">
+      <h3 class="h3">Пример</h3>
+      <div class="ex__grid">
+        <pre class="code"><code><span class="c-com">/* mobile mockup, 375 */</span>
+.hotels {
+  <span class="c-prop">display</span>: grid;
+  <span class="c-prop">gap</span>: 12rem;
+  <span class="c-prop">padding</span>: 0 20rem;
+}
+.hotels__title {
+  <span class="c-prop">font-size</span>: 21rem;
+}
+
+<span class="c-com">/* tablet mockup, 768 */</span>
+@media (min-width: 500px) {
+  .hotels {
+    <span class="c-prop">grid-template-columns</span>: repeat(2, 1fr);
+    <span class="c-prop">gap</span>: 20rem;
+    <span class="c-prop">padding</span>: 0 32rem;
+  }
+  .hotels__title {
+    <span class="c-prop">font-size</span>: 28rem;
+  }
+}
+
+<span class="c-com">/* desktop mockup, 1440 */</span>
+@media (min-width: 1152px) {
+  .hotels {
+    <span class="c-prop">grid-template-columns</span>: repeat(4, 1fr);
+    <span class="c-prop">gap</span>: 24rem;
+    <span class="c-prop">padding</span>: 0 80rem;
+  }
+  .hotels__title {
+    <span class="c-prop">font-size</span>: 36rem;
+  }
+}</code></pre>
+        <div class="notes">
+          <div class="note-i"><h4 class="note-i__t">Mobile first</h4><p class="note-i__x">Сначала мобильная версия без медиа-запросов, потом планшет и десктоп.</p></div>
+          <div class="note-i"><h4 class="note-i__t">Числа — прямо из макетов</h4><p class="note-i__x">Заголовок списка отелей в демо-макетах: 21 px на мобильном, 28 px на планшете, 36 px на десктопе. В коде те же числа, только в rem.</p></div>
+          <div class="note-i"><h4 class="note-i__t">Между брейкпоинтами кода нет</h4><p class="note-i__x">На 412 px заголовок будет 21 × 1,099 = 23,1 px, на 900 px — 28 × 1,172 = 32,8 px. Это делает CSS из первого шага.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--black" id="skill" aria-labelledby="skill-title">
+  <div class="wrap sec__inner skill">
+    <div class="skill__text">
+      <p class="kicker"><i></i>05 · Скилл для AI</p>
+      <h2 class="h2" id="skill-title">Научите AI-агента верстать так же</h2>
+      <p class="skill__lead">Скилл — файл SKILL.md на английском: инструкция, которую AI-агент читает перед работой. Положите его в папку скиллов агента, и он будет верстать по этим правилам.</p>
+      <div class="skill__in">
+        <p class="skill__inT">Что внутри</p>
+        <ul class="ticks">
+          <li>Правило 1rem = 1px макета</li>
+          <li>Брейкпоинты 375 / 768 / 1440 и границы 500 и 1152 px</li>
+          <li>CSS целиком и разбор формулы</li>
+          <li>Что делать с макетами не на ширине брейкпоинта</li>
+          <li>Подводные камни и чек-лист крайних ширин</li>
+        </ul>
+      </div>
+      <div class="skill__btns">
+        <a class="btn btn--violet" href="SKILL.md" download="SKILL.md"><svg class="i-btn" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 2.5v9M5 8l4 4 4-4M3 15h12"/></svg><span>Скачать SKILL.md</span></a>
+        <button class="btn btn--outline" type="button" data-copy="skill" data-src="SKILL.md" data-label="Скопировать" data-done="Скопировано"><span>Скопировать</span></button>
+      </div>
+    </div>
+    <div class="preview">
+      <div class="preview__bar"><svg class="i-file" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z"/><path d="M9.5 1.5V5H13"/></svg><span>SKILL.md</span></div>
+      <pre class="code code--skill"><code><span class="c-com">---</span>
+<span class="c-prop">name</span>: pantograph-layout
+<span class="c-prop">description</span>: Pantograph layout: scale a page with
+  the viewport so it matches the Figma mockup at any
+  width inside a breakpoint (1rem = 1px of mockup, …
+<span class="c-com">---</span>
+
+<span class="c-h"># Pantograph layout</span>
+
+<span class="c-h">## The idea in one line</span>
+html font-size = viewport width / mockup width.
+At the mockup width 1rem is exactly 1px of the mockup.
+
+<span class="c-h">## Breakpoints</span>
+| up to 499px | 375  | 0.853px → 1.333px |
+| 500–1151px  | 768  | 0.651px → 1.5px   |
+| 1152px+     | 1440 | 0.8px → 1.111px   |
+
+<span class="c-h">## The CSS</span>
+<span class="c-h">## How it works</span>
+<span class="c-h">## Writing styles</span>
+<span class="c-h">## Mockup not at the breakpoint width</span>
+<span class="c-h">## Pitfalls</span>
+<span class="c-h">## Review checklist</span></code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="limits" aria-labelledby="limits-title">
+  <div class="wrap sec__inner lim">
+    <div class="sec__head">
+      <p class="kicker"><i></i>06 · Ограничения</p>
+      <h2 class="h2" id="limits-title">Где Pantograph ломается</h2>
+    </div>
+    <div class="lim__cards">
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Анимации в px</h3><p class="wcard__x">JS-библиотеки анимаций, например GSAP, выставляют координаты и размеры в px напрямую. Такие значения не масштабируются вместе с окном. После анимации пересчитайте итоговые позиции и размеры в rem.</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Свои границы брейкпоинтов</h3><p class="wcard__x">Если сетка переключается не на 500 и 1152 px, а масштаб — на них, в промежутке планшетная сетка встретится с мобильным масштабом. Берите границы из CSS.</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Чужой код в rem</h3><p class="wcard__x">1rem на странице около 1 px, а не 16. Сторонние виджеты и стили, где rem рассчитан на 16 px, станут крошечными. Их размеры переводите в px или в масштаб макета.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="brand" href="./"><svg class="i-logo" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="17" width="9" height="9" rx="1.5" fill="#8377F1"/><path d="M6.5 21.5L23 5" stroke="#8377F1" stroke-width="2" stroke-dasharray="3 3"/></svg><span>Pantograph Layout</span></a>
+    <div class="footer__why">
+      <p class="footer__whyT">Почему «пантограф»</p>
+      <p class="footer__whyX">Пантограф — чертёжный инструмент, который копирует рисунок в другом масштабе. Здесь то же самое: макет из Figma переносится на экран любой ширины в нужном масштабе.</p>
+      <p class="footer__repo"><a href="https://github.com/Promo/pantograph-layout">Исходники на GitHub</a></p>
+    </div>
+  </div>
+</footer>
+
+<script type="application/json" id="page-data">{"lang": "ru", "dec": ",", "bp": {"m": "Мобильный", "t": "Планшет", "d": "Десктоп"}, "play": "Запустить", "pause": "Пауза", "mini": {"brand": "Поиск отелей", "menu": "Меню", "city": "Стамбул", "dates": "12–15 октября · 2 гостя", "where": "Куда едем?", "d1": "12 окт", "d2": "15 окт", "dShort": "12–15 окт", "dLong": "12–15 октября", "guests": "2 гостя", "search": "Найти отели", "searchShort": "Найти", "popular": "Популярные отели", "nav": ["Отели", "Апартаменты", "Туры", "Для бизнеса"], "login": "Войти", "hotels": [{"n": "Галата Резиденс", "m": "8,9 · 1,2 км от центра", "p": "от 7 400 ₽"}, {"n": "Босфор Вью", "m": "9,2 · на набережной", "p": "от 9 800 ₽"}, {"n": "Старый город", "m": "8,6 · 400 м до Айя-Софии", "p": "от 5 900 ₽"}, {"n": "Кадыкёй Лофт", "m": "8,7 · азиатский берег", "p": "от 6 200 ₽"}]}}</script>
+</body>
+</html>

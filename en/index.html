@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantograph Layout — the mockup doesn’t reflow, it scales</title>
+<meta name="description" content="A layout technique that makes a page look like its Figma mockup at any width inside a breakpoint. The CSS, the formula, tips for designers and a skill for AI agents.">
+<meta property="og:title" content="Pantograph Layout — the mockup doesn’t reflow, it scales">
+<meta property="og:description" content="A layout technique that makes a page look like its Figma mockup at any width inside a breakpoint. The CSS, the formula, tips for designers and a skill for AI agents.">
+<meta name="theme-color" content="#000000">
+<link rel="alternate" hreflang="ru" href="https://promo.github.io/pantograph-layout/">
+<link rel="alternate" hreflang="en" href="https://promo.github.io/pantograph-layout/en/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/pantograph.css">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="header">
+  <div class="wrap header__inner">
+    <a class="brand" href="./"><svg class="i-logo" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="17" width="9" height="9" rx="1.5" fill="#8377F1"/><path d="M6.5 21.5L23 5" stroke="#8377F1" stroke-width="2" stroke-dasharray="3 3"/></svg><span>Pantograph Layout</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#idea">The idea</a>
+      <a href="#algo">Algorithm</a>
+      <a href="#design">Designers</a>
+      <a href="#code">Developers</a>
+      <a href="#skill">AI skill</a>
+      <a href="#limits">Limits</a>
+    </nav>
+    <div class="lang" data-lang>
+      <button class="lang__btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu" aria-label="Language: English" data-lang-btn><svg class="i-globe" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="9" r="7.25"/><path d="M1.75 9h14.5M9 1.75c2 2 3 4.4 3 7.25s-1 5.25-3 7.25M9 1.75c-2 2-3 4.4-3 7.25s1 5.25 3 7.25"/></svg><span>EN</span><svg class="i-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 4.5l3 3 3-3"/></svg></button>
+      <ul class="lang__menu" id="lang-menu" hidden data-lang-menu>
+        <li><a href="../" hreflang="ru" lang="ru">Русский<small>RU</small></a></li>
+        <li><a href="../en/" hreflang="en" lang="en" aria-current="true">English<small>EN</small></a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero__inner">
+    <div class="hero__head">
+      <p class="hero__kicker">A layout technique for designers and front-end developers</p>
+      <h1 class="hero__title" id="hero-title"><span>The mockup doesn’t reflow.</span> <span class="accent">It scales.</span></h1>
+      <div class="hero__row">
+        <p class="hero__lead">Within a breakpoint the page looks like the Figma mockup at any width: same proportions, same line breaks, same composition. Only the scale changes.</p>
+        <div class="hero__controls">
+          <p class="hero__hint">Drag the slider or watch it play</p>
+          <button class="btn-play" type="button" data-play data-state="playing"><svg class="i-pause" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="4" height="14" rx="1"/><rect x="11" y="2" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M4 2.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 4 2.5z"/></svg><span data-play-label>Pause</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo" data-demo>
+      <div class="demo__stage" data-stage>
+        <div class="demo__frame" data-frame aria-hidden="true"><div class="demo__screen" data-screen inert></div></div>
+        <div class="demo__graph" data-graph aria-hidden="true">
+          <svg class="demo__svg" data-svg xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <path class="g-grid" data-path="grid"></path>
+            <path class="g-borders" data-path="borders"></path>
+            <path class="g-one" data-path="one"></path>
+            <path class="g-full" data-path="full"></path>
+            <path class="g-trail" data-path="trail"></path>
+            <path class="g-dots" data-path="dots"></path>
+            <circle class="g-marker" data-marker-dot r="7"></circle>
+          </svg>
+          <div data-labels></div>
+        </div>
+        <div class="demo__marker" data-marker aria-hidden="true"></div>
+        <div data-bands aria-hidden="true"></div>
+        <input class="scrub" type="range" min="320" max="1920" step="1" value="412" data-scrub aria-label="Viewport width">
+      </div>
+      <ul class="legend" aria-hidden="true">
+        <li><i class="sw sw--m"></i>Mobile</li>
+        <li><i class="sw sw--t"></i>Tablet</li>
+        <li><i class="sw sw--d"></i>Desktop</li>
+      </ul>
+      <div class="readouts">
+        <div class="ro ro--vw"><span class="ro__label">Viewport</span><span class="ro__value"><span data-out="vw">412</span> px</span></div>
+        <div class="ro ro--bp"><span class="ro__label">Breakpoint</span><span class="ro__value"><span data-out="bpName">Mobile</span> · <span data-out="bpVw">375</span></span></div>
+        <div class="ro ro--rem"><span class="ro__label">1rem</span><span class="ro__value"><span class="desk">1rem = </span><span data-out="rem">1.099</span> px</span></div>
+        <div class="ro ro--px"><span class="ro__label">24px mockup text</span><span class="ro__value"><span class="aa" data-aa aria-hidden="true">Aa</span><span><span data-out="px24">26.4</span> px</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="idea" aria-labelledby="idea-title">
+  <div class="wrap sec__inner cmp">
+    <div class="sec__head">
+      <p class="kicker"><i></i>01 · The idea</p>
+      <h2 class="h2 cmp__title" id="idea-title">How Pantograph differs from a regular responsive layout</h2>
+      <p class="lead">Take a 375 px mobile mockup and open the page on a phone that is 480 px wide.</p>
+    </div>
+    <div class="cmp__tabs" role="group" aria-label="Compare the options">
+      <button class="cmp__tab" type="button" aria-pressed="true" data-tab="0">Figma mockup</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="1">Layout in px</button>
+      <button class="cmp__tab" type="button" aria-pressed="false" data-tab="2">Pantograph</button>
+    </div>
+    <div class="cmp__items" data-active="0" data-cmp>
+      <figure class="cmp__item">
+        <p class="cmp__w">375 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="375" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Figma mockup</span><span class="cmp__x">The reference.</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame" aria-hidden="true"><div class="cmp__mini" data-mini="480px" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Layout in px</span><span class="cmp__x">Fonts and spacing stay as in the mockup, blocks stretch to the width. The proportions are no longer what the designer drew.</span></figcaption>
+      </figure>
+      <figure class="cmp__item">
+        <p class="cmp__w">480 px</p>
+        <div class="cmp__frame cmp__frame--accent" aria-hidden="true"><div class="cmp__mini" data-mini="480" inert></div></div>
+        <figcaption class="cmp__cap"><span class="cmp__t">Pantograph</span><span class="cmp__x">Everything is scaled by 480 / 375 = 1.28. It is the same mockup, only larger.</span></figcaption>
+      </figure>
+    </div>
+    <div class="cmp__sum">
+      <div class="card card--grey"><h3 class="card__t">Responsive layout</h3><p class="card__x">Sizes are fixed in px. Between breakpoints blocks stretch and shrink, so every width in between has to be checked separately.</p></div>
+      <div class="card card--violet"><h3 class="card__t">Pantograph layout</h3><p class="card__x">Sizes are in rem, and 1rem depends on the viewport width. Any width inside a breakpoint is the mockup at scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="algo" aria-labelledby="algo-title">
+  <div class="wrap sec__inner algo">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>02 · Algorithm</p>
+      <h2 class="h2" id="algo-title">One stylesheet, one formula</h2>
+      <p class="lead lead--narrow">The CSS defines the breakpoints and computes the font-size of html. The whole layout is written in rem, so it grows and shrinks along with it.</p>
+    </div>
+
+    <div class="s1">
+      <div class="s1__text">
+        <span class="num">1</span>
+        <h3 class="h3">Breakpoints: three mockups, three ranges</h3>
+        <p class="p">Each range of widths gets three numbers. --balance-point is the balance point: the width of the Figma mockup, where 1rem is exactly 1px. --min-vw and --max-vw are the range edges. The numbers have no units so they can be divided by each other.</p>
+        <div class="tbl" role="table">
+          <div class="tbl__row tbl__head" role="row"><span role="columnheader">Viewport</span><span role="columnheader">Mockup</span><span role="columnheader">1rem at the edges</span></div>
+          <div class="tbl__row" role="row"><span role="cell">up to 499 px</span><b role="cell">375</b><span role="cell">0.853 → 1.333 px</span></div>
+          <div class="tbl__row" role="row"><span role="cell">500–1151 px</span><b role="cell">768</b><span role="cell">0.651 → 1.5 px</span></div>
+          <div class="tbl__row" role="row"><span role="cell">1152 px and up</span><b role="cell">1440</b><span role="cell">0.8 → 1.111 px</span></div>
+        </div>
+        <p class="note">The first media query starts at 0 px, but the math starts at 320: on narrower screens 1rem never drops below 0.853 px.</p>
+      </div>
+      <pre class="code"><code><span class="c-com">/* Breakpoints */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 320;
+    <span class="c-prop">--max-vw</span>: 500;
+    <span class="c-prop">--balance-point</span>: 375;
+  }
+}
+@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 500;
+    <span class="c-prop">--max-vw</span>: 1152;
+    <span class="c-prop">--balance-point</span>: 768;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 1152;
+    <span class="c-prop">--max-vw</span>: 1600;
+    <span class="c-prop">--balance-point</span>: 1440;
+  }
+}</code></pre>
+    </div>
+
+    <div class="s2">
+      <div class="s2__head">
+        <span class="num">2</span>
+        <h3 class="h3">Computing 1rem</h3>
+        <p class="p">The CSS draws a straight line: at min-vw 1rem is at its smallest, at max-vw at its largest, and in between it grows evenly. Here it is piece by piece; the example numbers are for the tablet range.</p>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>:root {
+  <span class="c-prop">--min-font-size</span>: calc(var(--min-vw) / var(--balance-point));
+  <span class="c-prop">--max-font-size</span>: calc(var(--max-vw) / var(--balance-point));</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Size of 1rem at the range edges</h4><p class="chunk__x">At the mockup width 1rem = 1px. At a range edge it is smaller or larger by the same ratio as the edge is to the mockup.</p><p class="chunk__e">500 / 768 = 0.651 px<br>1152 / 768 = 1.5 px</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--diff-font-size</span>: calc(var(--max-font-size) - var(--min-font-size));
+  <span class="c-prop">--diff-vw</span>: calc(var(--max-vw) - var(--min-vw));
+  <span class="c-prop">--slope</span>: calc(var(--diff-font-size) / var(--diff-vw));</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Slope</h4><p class="chunk__x">How many px 1rem gains with each pixel of viewport width.</p><p class="chunk__e">(1.5 − 0.651) / (1152 − 500)<br>= 0.001302 = 1 / 768</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--max-font-size-px</span>: calc(var(--max-font-size) * 1px);
+  <span class="c-prop">--min-font-size-px</span>: calc(var(--min-font-size) * 1px);
+  <span class="c-prop">--min-vw-px</span>: calc(var(--min-vw) * 1px);
+  <span class="c-prop">--fluid-font-size-px</span>: calc(
+    var(--slope) * (100vw - var(--min-vw-px)) + var(--min-font-size-px)
+  );</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Line equation</h4><p class="chunk__x">A line through the point (min-vw; min-font-size) with that slope. 100vw is the current viewport width. Multiplying by 1px turns the unitless numbers into pixels.</p><p class="chunk__e">Viewport 900 px:<br>0.001302 × (900 − 500) + 0.651 = 1.172 px</p></div>
+      </div>
+      <div class="chunk">
+        <pre class="code"><code>  <span class="c-prop">--clamp-scaling-fs</span>: clamp(
+    var(--min-font-size-px),
+    var(--fluid-font-size-px),
+    var(--max-font-size-px)
+  );
+}
+
+html {
+  <span class="c-prop">font-size</span>: var(--clamp-scaling-fs);
+}</code></pre>
+        <div class="chunk__text"><h4 class="chunk__t">Clamp and apply</h4><p class="chunk__x">clamp keeps the size inside the range edges. Inside the range it changes nothing; it only acts above 1600 px and below 320 px. The result becomes the font-size of html, and every rem on the page is computed from it.</p></div>
+      </div>
+    </div>
+
+    <div class="s3">
+      <div class="s3__head"><span class="num">3</span><h3 class="s3__t">The formula, simplified</h3></div>
+<pre class="deriv deriv--short">slope = (max-font-size − min-font-size)
+        / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw)
+      + min-vw / balance-point
+      = 100vw / balance-point</pre>
+<pre class="deriv deriv--long">slope = (max-font-size − min-font-size) / (max-vw − min-vw)
+      = 1 / balance-point
+
+fluid = slope × (100vw − min-vw) + min-vw / balance-point
+      = 100vw / balance-point</pre>
+      <p class="s3__big">1rem = viewport width ÷ mockup width</p>
+      <p class="s3__x">That is all the algorithm does. The other variables let CSS evaluate the formula, and clamp keeps the value inside the range.</p>
+      <ul class="chips">
+        <li>375 px → 1 px</li>
+        <li>412 px → 1.099 px</li>
+        <li>480 px → 1.28 px</li>
+        <li>1024 px → 1.333 px</li>
+      </ul>
+    </div>
+
+    <div class="live" data-live>
+      <div class="live__side">
+        <h3 class="h3">Try your own width</h3>
+        <p class="live__p">The values follow the width from the demo at the top. Pick a width here or go back to the slider.</p>
+        <div class="presets" data-presets>
+          <button type="button" data-vw="320" aria-pressed="false">320</button>
+          <button type="button" data-vw="375" aria-pressed="false">375</button>
+          <button type="button" data-vw="499" aria-pressed="false">499</button>
+          <button type="button" data-vw="500" aria-pressed="false">500</button>
+          <button type="button" data-vw="768" aria-pressed="false">768</button>
+          <button type="button" data-vw="1151" aria-pressed="false">1151</button>
+          <button type="button" data-vw="1152" aria-pressed="false">1152</button>
+          <button type="button" data-vw="1440" aria-pressed="false">1440</button>
+          <button type="button" data-vw="1600" aria-pressed="false">1600</button>
+          <button type="button" data-vw="1920" aria-pressed="false">1920</button>
+        </div>
+        <div class="live__now">
+          <span class="live__vw"><span data-out="vw">412</span> px</span>
+          <span class="live__bp"><span data-out="bpName">Mobile</span> · mockup <span data-out="bpVw">375</span> px</span>
+        </div>
+      </div>
+      <dl class="rows">
+        <div class="row"><dt class="row__l">Variables</dt><dd class="row__v" data-out="vars">min-vw 320 · max-vw 500 · balance-point 375</dd></div>
+        <div class="row"><dt class="row__l">min-font-size</dt><dd class="row__v" data-out="minLine">320 / 375 = 0.853 px</dd></div>
+        <div class="row"><dt class="row__l">max-font-size</dt><dd class="row__v" data-out="maxLine">500 / 375 = 1.333 px</dd></div>
+        <div class="row"><dt class="row__l">slope</dt><dd class="row__v" data-out="slopeLine">(1.333 − 0.853) / (500 − 320) = 0.002667</dd></div>
+        <div class="row"><dt class="row__l">fluid-font-size</dt><dd class="row__v" data-out="fluidLine">0.002667 × (412 − 320) + 0.853 = 1.099 px</dd></div>
+        <div class="row"><dt class="row__l">clamp</dt><dd class="row__v"><span data-out="clampLine">clamp(0.853, 1.099, 1.333) = 1.099 px</span><span class="clamped" data-clamped hidden>Viewport wider than 1600 px: the upper limit applies</span></dd></div>
+        <div class="row row--res"><dt class="row__l">Result</dt><dd class="row__v"><span>1rem = <span data-out="rem">1.099</span> px</span><span class="sep"> · </span><span>24rem = <span data-out="px24">26.4</span> px</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="s4">
+      <div class="s4__head"><span class="num">4</span><h3 class="h3">What happens at the borders</h3></div>
+      <div class="cards3">
+        <div class="wcard"><h4 class="wcard__t">Breakpoint switch</h4><p class="wcard__x">At 1151 px the tablet mockup is scaled ×1.5. At 1152 px the desktop mockup takes over at ×0.8. The layout has changed, and the new mockup starts from a smaller scale. The jump is expected.</p></div>
+        <div class="wcard"><h4 class="wcard__t">Wider than 1600 px</h4><p class="wcard__x">clamp stops the growth: 1rem stays at 1.111 px. Fonts and spacing stop growing, and the extra width goes into the margins.</p></div>
+        <div class="wcard"><h4 class="wcard__t">Narrower than 320 px</h4><p class="wcard__x">1rem never drops below 0.853 px. The mobile mockup stops shrinking.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="design" aria-labelledby="design-title">
+  <div class="wrap sec__inner des">
+    <div class="sec__head">
+      <p class="kicker"><i></i>03 · For designers</p>
+      <h2 class="h2" id="design-title">What it means for designers</h2>
+    </div>
+    <div class="des__grid">
+      <div class="gcard">
+        <h3 class="gcard__t">Draw three mockups: 375, 768 and 1440 px</h3>
+        <p class="gcard__x">Each mockup covers its own range of widths. There is no need to draw the widths in between: they are the same mockup at scale.</p>
+        <div class="devices" aria-hidden="true">
+          <div class="dev dev--m"><div class="dev__box"></div><span class="dev__n">375</span><span class="dev__r">up to 499 px</span></div>
+          <div class="dev dev--t"><div class="dev__box"></div><span class="dev__n">768</span><span class="dev__r">500–1151 px</span></div>
+          <div class="dev dev--d"><div class="dev__box"></div><span class="dev__n">1440</span><span class="dev__r">1152 px and up</span></div>
+        </div>
+      </div>
+      <div class="gcard">
+        <h3 class="gcard__t">Check the edge widths</h3>
+        <p class="gcard__x">The mockup shrinks the most at 500 px, where the tablet mockup is at ×0.65. Check small tablet text at this width.</p>
+        <div class="etbl" role="table">
+          <div class="etbl__row etbl__head" role="row"><span role="columnheader">Viewport</span><span role="columnheader">Mockup</span><span role="columnheader">Scale</span><span role="columnheader">14px text</span></div>
+          <div class="etbl__row" role="row"><span role="cell">320</span><span role="cell">375</span><span role="cell">× 0.853</span><span role="cell">11.9 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">499</span><span role="cell">375</span><span role="cell">× 1.331</span><span role="cell">18.6 px</span></div>
+          <div class="etbl__row is-strong" role="row"><span role="cell">500</span><span role="cell">768</span><span role="cell">× 0.651</span><span role="cell">9.1 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1151</span><span role="cell">768</span><span role="cell">× 1.499</span><span role="cell">21.0 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1152</span><span role="cell">1440</span><span role="cell">× 0.8</span><span role="cell">11.2 px</span></div>
+          <div class="etbl__row" role="row"><span role="cell">1600+</span><span role="cell">1440</span><span role="cell">× 1.111</span><span role="cell">15.6 px</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="des__off">
+      <h3 class="h3">If the mockup isn’t drawn at the breakpoint width</h3>
+      <div class="des__bgrid">
+        <div class="ocard">
+          <h4 class="gcard__t">Different mockup width</h4>
+          <p class="gcard__x">Desktop drawn at 1200 and mobile at 360? No need to recalculate numbers by hand. Put your mockup width into --balance-point, and 1rem is again 1px of your mockup. The range edges and media queries stay the same.</p>
+          <pre class="code code--sm"><code><span class="c-com">/* after the CSS above */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 360;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 1200;
+  }
+}</code></pre>
+          <p class="note">Side effect: at the breakpoint width 1rem is no longer 1px (at 1440 it is 1.2 px). The mockup becomes the reference.</p>
+        </div>
+        <div class="ocard">
+          <h4 class="gcard__t">No tablet mockup</h4>
+          <p class="gcard__x">Use the desktop layout at a scale of about 0.75: for the tablet range, --balance-point = 768 / 0.75 = 1024. The honest 1200 gives a scale of 0.64 at 768 px and text of around 15 px, which is too small.</p>
+          <p class="gcard__x">To keep content within 768 px, set container and column widths in percent. Keep fonts, spacing, heights and radii in rem. Shrink or move large illustrations with a separate rule.</p>
+          <pre class="code code--sm"><code>@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--balance-point</span>: 1024; /* 768 / 0.75 */
+  }
+}</code></pre>
+          <p class="note">Write the chosen scales down in the project README so the rule doesn’t get lost.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--lavender" id="code" aria-labelledby="code-title">
+  <div class="wrap sec__inner codes">
+    <div class="sec__head">
+      <p class="kicker kicker--dark"><i></i>04 · For developers</p>
+      <h2 class="h2" id="code-title">How to build</h2>
+    </div>
+    <div class="codegrid">
+      <div class="scard scard--1">
+        <span class="num num--s">1</span>
+        <h3 class="scard__t">Add the CSS</h3>
+        <p class="scard__x">Once, globally, before the page styles. It sets the font-size of html, so it affects every rem. If only some pages use this layout, include the CSS only on those.</p>
+        <button class="btn-copy" type="button" data-copy="css" data-label="Copy CSS" data-done="Copied"><svg class="i-btn" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="6" width="9.5" height="9.5" rx="2"/><path d="M12 6V4a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 3 4v6.5A1.5 1.5 0 0 0 4.5 12H6"/></svg><span>Copy CSS</span></button>
+      </div>
+      <pre class="code code--full" id="css-full"><code><span class="c-com">/* Breakpoints */</span>
+@media (min-width: 0px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 320;
+    <span class="c-prop">--max-vw</span>: 500;
+    <span class="c-prop">--balance-point</span>: 375;
+  }
+}
+@media (min-width: 500px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 500;
+    <span class="c-prop">--max-vw</span>: 1152;
+    <span class="c-prop">--balance-point</span>: 768;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    <span class="c-prop">--min-vw</span>: 1152;
+    <span class="c-prop">--max-vw</span>: 1600;
+    <span class="c-prop">--balance-point</span>: 1440;
+  }
+}
+
+<span class="c-com">/* Scaling */</span>
+:root {
+  <span class="c-prop">--min-font-size</span>: calc(var(--min-vw) / var(--balance-point));
+  <span class="c-prop">--max-font-size</span>: calc(var(--max-vw) / var(--balance-point));
+  <span class="c-prop">--diff-font-size</span>: calc(var(--max-font-size) - var(--min-font-size));
+  <span class="c-prop">--diff-vw</span>: calc(var(--max-vw) - var(--min-vw));
+  <span class="c-prop">--slope</span>: calc(var(--diff-font-size) / var(--diff-vw));
+  <span class="c-prop">--max-font-size-px</span>: calc(var(--max-font-size) * 1px);
+  <span class="c-prop">--min-font-size-px</span>: calc(var(--min-font-size) * 1px);
+  <span class="c-prop">--min-vw-px</span>: calc(var(--min-vw) * 1px);
+  <span class="c-prop">--fluid-font-size-px</span>: calc(
+    var(--slope) * (100vw - var(--min-vw-px)) + var(--min-font-size-px)
+  );
+  <span class="c-prop">--clamp-scaling-fs</span>: clamp(
+    var(--min-font-size-px),
+    var(--fluid-font-size-px),
+    var(--max-font-size-px)
+  );
+}
+
+html {
+  <span class="c-prop">font-size</span>: var(--clamp-scaling-fs);
+}</code></pre>
+      <div class="scard scard--2">
+        <span class="num num--s">2</span>
+        <h3 class="scard__t">Figma numbers go into rem</h3>
+        <p class="scard__x">24px in the mockup is 24rem in code. No need to recalculate for each width: the scale changes by itself.</p>
+      </div>
+      <div class="scard scard--3">
+        <span class="num num--s">3</span>
+        <h3 class="scard__t">Media queries only for layout changes</h3>
+        <p class="scard__x">Use them when the grid changes or the mockups differ. The boundaries are the same 500 and 1152 px as in the CSS.</p>
+      </div>
+    </div>
+    <div class="ex">
+      <h3 class="h3">Example</h3>
+      <div class="ex__grid">
+        <pre class="code"><code><span class="c-com">/* mobile mockup, 375 */</span>
+.hotels {
+  <span class="c-prop">display</span>: grid;
+  <span class="c-prop">gap</span>: 12rem;
+  <span class="c-prop">padding</span>: 0 20rem;
+}
+.hotels__title {
+  <span class="c-prop">font-size</span>: 21rem;
+}
+
+<span class="c-com">/* tablet mockup, 768 */</span>
+@media (min-width: 500px) {
+  .hotels {
+    <span class="c-prop">grid-template-columns</span>: repeat(2, 1fr);
+    <span class="c-prop">gap</span>: 20rem;
+    <span class="c-prop">padding</span>: 0 32rem;
+  }
+  .hotels__title {
+    <span class="c-prop">font-size</span>: 28rem;
+  }
+}
+
+<span class="c-com">/* desktop mockup, 1440 */</span>
+@media (min-width: 1152px) {
+  .hotels {
+    <span class="c-prop">grid-template-columns</span>: repeat(4, 1fr);
+    <span class="c-prop">gap</span>: 24rem;
+    <span class="c-prop">padding</span>: 0 80rem;
+  }
+  .hotels__title {
+    <span class="c-prop">font-size</span>: 36rem;
+  }
+}</code></pre>
+        <div class="notes">
+          <div class="note-i"><h4 class="note-i__t">Mobile first</h4><p class="note-i__x">The mobile version first, without media queries, then tablet and desktop.</p></div>
+          <div class="note-i"><h4 class="note-i__t">Numbers straight from the mockups</h4><p class="note-i__x">The hotel list title in the demo mockups is 21 px on mobile, 28 px on tablet and 36 px on desktop. The code uses the same numbers, in rem.</p></div>
+          <div class="note-i"><h4 class="note-i__t">No code between breakpoints</h4><p class="note-i__x">At 412 px the title is 21 × 1.099 = 23.1 px, at 900 px it is 28 × 1.172 = 32.8 px. The CSS from step one does this.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--black" id="skill" aria-labelledby="skill-title">
+  <div class="wrap sec__inner skill">
+    <div class="skill__text">
+      <p class="kicker"><i></i>05 · AI skill</p>
+      <h2 class="h2" id="skill-title">Teach your AI agent the same technique</h2>
+      <p class="skill__lead">The skill is an English SKILL.md file: instructions an AI agent reads before it starts. Put it in your agent’s skills folder and it will build pages by these rules.</p>
+      <div class="skill__in">
+        <p class="skill__inT">What’s inside</p>
+        <ul class="ticks">
+          <li>The rule 1rem = 1px of the mockup</li>
+          <li>Breakpoints 375 / 768 / 1440 and the 500 and 1152 px borders</li>
+          <li>The full CSS and how the formula works</li>
+          <li>What to do with mockups drawn at other widths</li>
+          <li>Pitfalls and an edge-width checklist</li>
+        </ul>
+      </div>
+      <div class="skill__btns">
+        <a class="btn btn--violet" href="../SKILL.md" download="SKILL.md"><svg class="i-btn" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 2.5v9M5 8l4 4 4-4M3 15h12"/></svg><span>Download SKILL.md</span></a>
+        <button class="btn btn--outline" type="button" data-copy="skill" data-src="../SKILL.md" data-label="Copy" data-done="Copied"><span>Copy</span></button>
+      </div>
+    </div>
+    <div class="preview">
+      <div class="preview__bar"><svg class="i-file" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z"/><path d="M9.5 1.5V5H13"/></svg><span>SKILL.md</span></div>
+      <pre class="code code--skill"><code><span class="c-com">---</span>
+<span class="c-prop">name</span>: pantograph-layout
+<span class="c-prop">description</span>: Pantograph layout: scale a page with
+  the viewport so it matches the Figma mockup at any
+  width inside a breakpoint (1rem = 1px of mockup, …
+<span class="c-com">---</span>
+
+<span class="c-h"># Pantograph layout</span>
+
+<span class="c-h">## The idea in one line</span>
+html font-size = viewport width / mockup width.
+At the mockup width 1rem is exactly 1px of the mockup.
+
+<span class="c-h">## Breakpoints</span>
+| up to 499px | 375  | 0.853px → 1.333px |
+| 500–1151px  | 768  | 0.651px → 1.5px   |
+| 1152px+     | 1440 | 0.8px → 1.111px   |
+
+<span class="c-h">## The CSS</span>
+<span class="c-h">## How it works</span>
+<span class="c-h">## Writing styles</span>
+<span class="c-h">## Mockup not at the breakpoint width</span>
+<span class="c-h">## Pitfalls</span>
+<span class="c-h">## Review checklist</span></code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white" id="limits" aria-labelledby="limits-title">
+  <div class="wrap sec__inner lim">
+    <div class="sec__head">
+      <p class="kicker"><i></i>06 · Limits</p>
+      <h2 class="h2" id="limits-title">Where Pantograph breaks</h2>
+    </div>
+    <div class="lim__cards">
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Animations in px</h3><p class="wcard__x">JS animation libraries such as GSAP set coordinates and sizes in px directly. Those values don’t scale with the window. After the animation, recalculate the final positions and sizes in rem.</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Custom breakpoints</h3><p class="wcard__x">If the grid switches at widths other than 500 and 1152 px while the scale switches there, the tablet grid meets the mobile scale in between. Use the boundaries from the CSS.</p></div>
+      <div class="wcard wcard--grey"><h3 class="wcard__t">Third-party rem</h3><p class="wcard__x">1rem on the page is about 1 px, not 16. Third-party widgets and styles that assume 16 px per rem become tiny. Convert their sizes to px or to the mockup scale.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="brand" href="./"><svg class="i-logo" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="2" y="2" width="24" height="24" rx="2" stroke="currentColor" stroke-width="2"/><rect x="2" y="17" width="9" height="9" rx="1.5" fill="#8377F1"/><path d="M6.5 21.5L23 5" stroke="#8377F1" stroke-width="2" stroke-dasharray="3 3"/></svg><span>Pantograph Layout</span></a>
+    <div class="footer__why">
+      <p class="footer__whyT">Why “pantograph”</p>
+      <p class="footer__whyX">A pantograph is a drawing instrument that copies a picture at a different scale. Same here: the Figma mockup is carried over to a screen of any width at the right scale.</p>
+      <p class="footer__repo"><a href="https://github.com/Promo/pantograph-layout">Source on GitHub</a></p>
+    </div>
+  </div>
+</footer>
+
+<script type="application/json" id="page-data">{"lang": "en", "dec": ".", "bp": {"m": "Mobile", "t": "Tablet", "d": "Desktop"}, "play": "Play", "pause": "Pause", "mini": {"brand": "Hotel search", "menu": "Menu", "city": "Istanbul", "dates": "12–15 October · 2 guests", "where": "Where to?", "d1": "12 Oct", "d2": "15 Oct", "dShort": "12–15 Oct", "dLong": "12–15 October", "guests": "2 guests", "search": "Search hotels", "searchShort": "Search", "popular": "Popular hotels", "nav": ["Hotels", "Apartments", "Tours", "Business"], "login": "Sign in", "hotels": [{"n": "Galata Residence", "m": "8.9 · 1.2 km from center", "p": "from €85"}, {"n": "Bosphorus View", "m": "9.2 · on the waterfront", "p": "from €112"}, {"n": "Old Town", "m": "8.6 · 400 m to Hagia Sophia", "p": "from €68"}, {"n": "Kadıköy Loft", "m": "8.7 · Asian side", "p": "from €71"}]}}</script>
+</body>
+</html>

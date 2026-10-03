@@ -1,0 +1,46 @@
+/* Breakpoints */
+@media (min-width: 0px) {
+  :root {
+    --min-vw: 320;
+    --max-vw: 500;
+    --balance-point: 375;
+  }
+}
+@media (min-width: 500px) {
+  :root {
+    --min-vw: 500;
+    --max-vw: 1152;
+    --balance-point: 768;
+  }
+}
+@media (min-width: 1152px) {
+  :root {
+    --min-vw: 1152;
+    --max-vw: 1600;
+    --balance-point: 1440;
+  }
+}
+
+/* Scaling */
+:root {
+  --min-font-size: calc(var(--min-vw) / var(--balance-point));
+  --max-font-size: calc(var(--max-vw) / var(--balance-point));
+  --diff-font-size: calc(var(--max-font-size) - var(--min-font-size));
+  --diff-vw: calc(var(--max-vw) - var(--min-vw));
+  --slope: calc(var(--diff-font-size) / var(--diff-vw));
+  --max-font-size-px: calc(var(--max-font-size) * 1px);
+  --min-font-size-px: calc(var(--min-font-size) * 1px);
+  --min-vw-px: calc(var(--min-vw) * 1px);
+  --fluid-font-size-px: calc(
+    var(--slope) * (100vw - var(--min-vw-px)) + var(--min-font-size-px)
+  );
+  --clamp-scaling-fs: clamp(
+    var(--min-font-size-px),
+    var(--fluid-font-size-px),
+    var(--max-font-size-px)
+  );
+}
+
+html {
+  font-size: var(--clamp-scaling-fs);
+}
